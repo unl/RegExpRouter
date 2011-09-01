@@ -5,7 +5,9 @@ class Router
     
     public static $classPrefix = "";
     
-    public static function route($requestURI, $baseURL, $classPrefix = "", $options = array())
+    public static $classDir = "";
+    
+    public static function route($requestURI, $baseURL, $classDir, $classPrefix = "", $options = array())
     {
         self:: $classPrefix = $classPrefix;
         
