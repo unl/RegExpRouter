@@ -84,7 +84,7 @@ class Router
         foreach ($directory as $file) {
             if ($file->getType() == 'dir' && !$file->isDot()) {
                 $class = self::$classPrefix . $file->getFileName() . "_Router";
-                if (file_exists(dirname(dirname(__FILE__)) . "/" . str_replace('_', '/', $class). ".php")
+                if (file_exists(self::$classDir . str_replace('_', '/', $class). ".php")
                     && class_exists($class)) {
                     $routes += call_user_func($class . "::getRoutes");
                 }
