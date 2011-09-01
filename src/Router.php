@@ -9,11 +9,23 @@ class Router
     
     private $routes = array();
     
-    function __construct($baseURL, $classDir, $classPrefix = "")
+    function __construct($options = array())
     {
-        $this->baseURL     = $baseURL;
-        $this->classDir    = $classDir;
-        $this->classPrefix = $classPrefix;
+        if (!isset($options['baseURL']) || empty($options['baseURL'])) {
+            throw new Exception("You must define the baseURL", 500);
+        }
+        
+        if (!isset($options['classDir']) || empty($options['baseURL'])) {
+            throw new Exception("You must define the classDir", 500);
+        }
+        
+        if (!isset($options['classPrefix']) || empty($options['classPrefix'])) {
+            $options['classPrefix'] = "";
+        }
+        
+        foreach ($options as $key=>$val) {
+            $this->$key = $val;
+        }
         
         $this->routes = $this->getDefaultRoutes();
     }
