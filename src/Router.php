@@ -95,7 +95,7 @@ class Router
         //Compile all the routes.
         foreach ($directory as $file) {
             if ($file->getType() == 'dir' && !$file->isDot()) {
-                $class = $this->classPrefix . $file->getFileName() . "_Router";
+                $class = $this->classPrefix . $file->getFileName() . "_Routes";
                 if (class_exists($class)) {
                     $routes += call_user_func($class . "::getRoutes");
                 }
