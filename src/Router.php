@@ -3,24 +3,29 @@ class Router
 {
     public static $cacheRoutes = true;
     
-    public static $classPrefix = "";
+    public $classPrefix = "";
     
-    public static $classDir = "";
+    public $classDir = "";
     
-    public static function route($requestURI, $baseURL, $classDir, $classPrefix = "", $options = array())
+    private $routes = array();
+    
+    function __construct($baseURL, $classDir, $classPrefix = "")
     {
-        self:: $classPrefix = $classPrefix;
+        $this->baseURL     = $baseURL;
+        $this->classDir    = $classDir;
+        $this->classPrefix = $classPrefix;
         
-        self::$classDir = $classDir;
-        
+        $this->routes = $this->getDefaultRoutes();
+    }
+    
+    public function route($requestURI,  $options = array())
+    {
         if (!empty($_SERVER['QUERY_STRING'])) {
             $requestURI = substr($requestURI, 0, -strlen($_SERVER['QUERY_STRING']) - 1);
         }
         
         // Trim the base part of the URL
-        $requestURI = substr($requestURI, strlen(parse_url($baseURL, PHP_URL_PATH)));
-        
-        $routes = self::getRoutes();
+        $requestURI = substr($requestURI, strlen(parse_url($this->baseURL, PHP_URL_PATH)));
         
         if (isset($options['view'], $routes[$options['view']])) {
             $options['model'] = $routes[$options['view']];
@@ -28,12 +33,10 @@ class Router
         }
 
         if (empty($requestURI)) {
-            // Default view/homepage
-            $options['model'] = "Home_View";
             return $options;
         }
 
-        foreach ($routes as $route_exp=>$model) {
+        foreach ($this->routes as $route_exp=>$model) {
             if ($route_exp[0] == '/' && preg_match($route_exp, $requestURI, $matches)) {
                 $options += $matches;
                 $options['model'] = $model;
@@ -44,46 +47,55 @@ class Router
         return $options;
     }
     
-    public static function getRoutes()
+    public function setRoutes($newRoutes)
+    {
+        $this->routes = $newRoutes;
+    }
+    
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
+    
+    public function getDefaultRoutes()
     {
         if (!self::$cacheRoutes) {
-            return self::compileRoutes();
+            return $this->compileRoutes();
         }
         
-        if (file_exists(self::getCachePath())) {
-            $cache = file_get_contents(self::getCachePath());
+        if (file_exists($this->getCachePath())) {
+            $cache = file_get_contents($this->getCachePath());
             return unserialize($cache);
         }
         
-        return self::cacheRoutes();
-        
+        return $this->cacheRoutes();
     }
     
-    public static function cacheRoutes()
+    public function cacheRoutes()
     {
-        $routes = self::compileRoutes();
+        $routes = $this->compileRoutes();
         
-        file_put_contents(self::getCachePath(), serialize($routes));
+        file_put_contents($this->getCachePath(), serialize($routes));
         
         return $routes;
     }
     
-    public static function getCachePath()
+    public function getCachePath()
     {
         return sys_get_temp_dir() . "/" . __CLASS__ . "_Cache.php";
     }
     
-    public static function compileRoutes()
+    public function compileRoutes()
     {
         $routes = array();
         
         //Directory itterator
-        $directory = new DirectoryIterator(dirname(__FILE__));
+        $directory = new DirectoryIterator($this->classDir);
         
         //Compile all the routes.
         foreach ($directory as $file) {
             if ($file->getType() == 'dir' && !$file->isDot()) {
-                $class = self::$classPrefix . $file->getFileName() . "_Router";
+                $class = $this->classPrefix . $file->getFileName() . "_Router";
                 if (class_exists($class)) {
                     $routes += call_user_func($class . "::getRoutes");
                 }
