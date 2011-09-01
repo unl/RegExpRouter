@@ -1,25 +1,29 @@
 <?php
-class Router_Template
+abstract class Router_RoutesInterface
 {
-    public static function getPostRoutes()
-    {
-        return array();
-    }
+    /**
+     * All of the Post POST for this model.
+     * @return array
+     */
+    abstract public static function getPostRoutes();
     
-    public static function getGetRoutes()
-    {
-        return array();
-    }
+    /**
+     * All of the GET Routes for this model.
+     * @return array
+     */
+    abstract public static function getGetRoutes();
     
-    public static function getDeleteRoutes()
-    {
-        return array();
-    }
+    /**
+     * All of the DELETE Routes for this model.
+     * @return array
+     */
+    abstract public static function getDeleteRoutes();
     
-    public static function getPutRoutes()
-    {
-        return array();
-    }
+    /**
+     * All of the PUT Routes for this model.
+     * @return array
+     */
+    abstract public static function getPutRoutes();
     
     public static function getRoutes()
     {
