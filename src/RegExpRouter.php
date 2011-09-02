@@ -1,11 +1,13 @@
 <?php
 class RegExpRouter
 {
-    public static $cacheRoutes = true;
+    public static $cacheRoutes = false;
     
-    public $classPrefix = "";
+    private $classPrefix = "";
     
-    public $classDir = "";
+    private $classDir = "";
+    
+    private $cacheName = "";
     
     private $routes = array();
     
@@ -16,6 +18,10 @@ class RegExpRouter
         }
         
         if (!isset($options['classDir']) || empty($options['baseURL'])) {
+            throw new Exception("You must define the classDir", 500);
+        }
+        
+        if (!isset($options['cacheName']) || empty($options['cacheName'])) {
             throw new Exception("You must define the classDir", 500);
         }
         
@@ -94,7 +100,7 @@ class RegExpRouter
     
     public function getCachePath()
     {
-        return sys_get_temp_dir() . "/" . __CLASS__ . "_Cache.php";
+        return sys_get_temp_dir() . "/RegExRouterCache_" .  $this->cacheName . ".php";
     }
     
     public function compileRoutes()
