@@ -1,5 +1,5 @@
 <?php
-class Router
+class RegExpRouter
 {
     public static $cacheRoutes = true;
     

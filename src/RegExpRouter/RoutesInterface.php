@@ -1,5 +1,5 @@
 <?php
-abstract class Router_RoutesInterface
+abstract class RegExpRouter_RoutesInterface
 {
     /**
      * All of the Post POST for this model.
