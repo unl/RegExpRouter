@@ -43,11 +43,7 @@ class RegExpRouter
             $options['model'] = $routes[$options['view']];
             return $options;
         }
-
-        if (empty($requestURI)) {
-            return $options;
-        }
-
+        
         foreach ($this->routes as $route_exp=>$model) {
             if ($route_exp[0] == '/' && preg_match($route_exp, $requestURI, $matches)) {
                 $options += $matches;
