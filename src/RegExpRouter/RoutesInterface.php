@@ -1,4 +1,11 @@
 <?php
+/**
+ * This class is a routes interface.  All Routes class must
+ * implement this interface to work properly.
+ * 
+ * @author mfairchild365
+ *
+ */
 abstract class RegExpRouter_RoutesInterface
 {
     /**
@@ -25,6 +32,9 @@ abstract class RegExpRouter_RoutesInterface
      */
     abstract public static function getPutRoutes();
     
+    /**
+     * Gathers all of the Routes for this object and returns them.
+     */
     public static function getRoutes()
     {
         $class = get_called_class();
