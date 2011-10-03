@@ -126,7 +126,7 @@ class RegExpRouter
             return unserialize($cache);
         }
         
-        //cache the routs because they haven't been cached yet.
+        //cache the routes because they haven't been cached yet.
         return $this->cacheRoutes();
     }
     
@@ -172,7 +172,7 @@ class RegExpRouter
             return $routes;
         }
         
-        //Directory itterator
+        //Directory iterator
         $directory = new DirectoryIterator($this->classDir);
         
         //Compile all the routes.
