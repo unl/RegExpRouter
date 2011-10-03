@@ -13,13 +13,13 @@ class RegExpRouter
     public static $cacheRoutes = false;
     
     //Class prefix for your sysem.  Determins name of Routes class, IE: Mysystem_Module_Routes
-    private $classPrefix = "";
+    protected $classPrefix = "";
     
     //The directory where your source is stored.
-    private $classDir = "";
+    protected $classDir = "";
     
     //Array of routes
-    private $routes = array();
+    protected $routes = array();
     
     /**
      * Constructor
