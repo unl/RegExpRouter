@@ -2,3 +2,7 @@
 .project
 .settings/org.eclipse.php.core.prefs
 
+
+Example/config.inc.php
+
+Example/.htaccess
