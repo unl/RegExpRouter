@@ -35,11 +35,6 @@ class RegExpRouter
             throw new Exception("You must define the baseURL", 500);
         }
         
-        //check if the classDir is set.
-        if (!isset($options['classDir']) || empty($options['baseURL'])) {
-            throw new Exception("You must define the classDir", 500);
-        }
-        
         //check if the classPrefix is set.
         if (!isset($options['classPrefix']) || empty($options['classPrefix'])) {
             $options['classPrefix'] = "";
@@ -171,6 +166,11 @@ class RegExpRouter
     {
         //Initialize an empty array.
         $routes = array();
+        
+        //Check if we are going to sift though directories.
+        if (empty($this->classDir)) {
+            return $routes;
+        }
         
         //Directory itterator
         $directory = new DirectoryIterator($this->classDir);
