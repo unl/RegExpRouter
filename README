@@ -1,18 +1,33 @@
-RegExpRouter
-=================
+h1. RegExpRouter
 
-Introduction
------------------
+h2. Introduction
+
 RegExpRouter is a php router system that routes clean URLs based on regular expressions.
 
 For each Model that has a route, you will need to place a file named "Routes" within that class, which implements RegExpRouter_RoutesInterface and define the regex routes for the model.
 
-The router will only work if you have your php class file system set up like this:
-/Example
-    /Example
-       /Routes.php (class name for Routes.php would be Example_Routes because its sits in he 'Example' directory.)
+h3. *The router will scan though your models and load routes.  To do so you need to make sure your files are set up like this:*
 
-View the very simple Example application in the Example folder to get a better feel of how it works.
+@ /Example
+    /Example
+       /Routes.php (class name for Routes.php would be Example_Routes because its sits in he 'Example' directory.)@
+
+$options = array('baseURL'=>'yoururl', 'classDir'=>'yourClassDir', 'classPrefix'=>'yourClassPrefix');
+$router = new RegExpRouter($options);
+$router->route($_SERVER['REQUEST_URI'], $_GET);
+
+
+h3. *Or you can compile the array of regex to model mapping yourself and call the RegExpRouter->setRoutes(array) method:*
+
+$options = array('baseURL'=>'yoururl');
+$router = new RegExpRouter($options);
+$router->setRoutes(array('/^home$/i' => 'Example_Home_View'));
+$router->route($_SERVER['REQUEST_URI'], $_GET);
+
+
+h2. Example
+
+To view the very simple Example application in the Example folder to get a better feel of how it works.
 
 To set up the example application you will have to do the following:
 1) Copy the config.sample.php to a new file called config.inc.php in the same folder.
