@@ -191,4 +191,9 @@ class RegExpRouter
         
         return $routes;
     }
+    
+    public function __invoke($requestURI, array $options = array())
+    {
+        return $this->route($requestURI, $options);
+    }
 }
