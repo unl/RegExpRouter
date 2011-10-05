@@ -34,18 +34,41 @@ abstract class RoutesInterface
     abstract public static function getPutRoutes();
     
     /**
-     * Gathers all of the Routes for this object and returns them.
+     * Gathers all of the Routes for this object.
+     * It then adds the called class's parent's namespace to all of the routes.
+     * Finally it returns the routs with the added namespace.
+     * 
+     * @return array $routes
      */
     public static function getRoutes()
     {
-        $class = get_called_class();
-        $routes = array();
-        
+        $class     = get_called_class();
+        $routes    = array();
+        $namespace = substr($class, 0, strlen($class)-6);
         $routes += call_user_func($class . "::getPostRoutes");
         $routes += call_user_func($class . "::getGetRoutes");
         $routes += call_user_func($class . "::getDeleteRoutes");
         $routes += call_user_func($class . "::getPutRoutes");
         
-        return $routes;
+        return self::addNamesapces($namespace, $routes);
+    }
+    
+    /**
+     * Adds a namespace to the routes's model class.
+     * 
+     * @param string $nameSpace
+     * @param array $routes
+     * 
+     * @return array $newRoutes
+     */
+    protected static function addNamesapces($nameSpace, array $routes) {
+        $newRoutes = array();
+        
+        foreach ($routes as $regex=>$route) {
+            $route = $nameSpace.$route;
+            $newRoutes[$regex] = $route;
+        }
+        
+        return $newRoutes;
     }
 }

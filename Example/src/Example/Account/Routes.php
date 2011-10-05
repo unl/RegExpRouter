@@ -5,7 +5,7 @@ class Routes extends \RegExpRouter\RoutesInterface
 {
     public static function getGetRoutes()
     {
-        return array('/^account$/i' => 'Example\Account\View');
+        return array('/^account$/i' => 'View'); //'View' refers to the 'View' class for THIS model.
     }
     
     public static function getPostRoutes()
