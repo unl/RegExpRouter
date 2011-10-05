@@ -1,5 +1,7 @@
 <?php
-class Example_Controller
+namespace Example;
+
+class Controller
 {
     /**
     * Options array

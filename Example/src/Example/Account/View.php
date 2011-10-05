@@ -1,5 +1,7 @@
 <?php
-class Example_Account_View
+namespace Example\Account;
+
+class View
 {
     function __construct(array $options = array())
     {

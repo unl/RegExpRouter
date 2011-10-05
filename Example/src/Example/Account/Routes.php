@@ -1,9 +1,11 @@
 <?php
-class Example_Account_Routes extends RegExpRouter\RoutesInterface
+namespace Example\Account;
+
+class Routes extends \RegExpRouter\RoutesInterface
 {
     public static function getGetRoutes()
     {
-        return array('/^account$/i' => 'Example_Account_View');
+        return array('/^account$/i' => 'Example\Account\View');
     }
     
     public static function getPostRoutes()

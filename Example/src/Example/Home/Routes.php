@@ -1,16 +1,18 @@
 <?php
-class Example_Home_Routes extends RegExpRouter\RoutesInterface
+namespace Example\Home;
+
+class Routes extends \RegExpRouter\RoutesInterface
 {
     public static function getGetRoutes()
     {
-        return array('/^home$/i' => 'Example_Home_View',
-                     '/^$/i' => 'Example_Home_View', //Match to an empty string, thus this is now the default home page.
+        return array('/^home$/i' => 'Example\Home\View',
+                     '/^$/i' => 'Example\Home\View', //Match to an empty string, thus this is now the default home page.
                     );
     }
     
     public static function getPostRoutes()
     {
-        return array('/^home\/((?<id>[\d]+)\/)?edit$/i' => 'Example_Home_Edit');
+        return array('/^home\/((?<id>[\d]+)\/)?edit$/i' => 'Example\Home\Edit');
     }
     
     public static function getDeleteRoutes()

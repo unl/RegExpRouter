@@ -1,5 +1,7 @@
 <?php
-class Example_Home_View
+namespace Example\Home;
+
+class View
 {
     function __construct(array $options = array())
     {
