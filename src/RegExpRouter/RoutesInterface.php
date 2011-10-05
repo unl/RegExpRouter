@@ -6,7 +6,8 @@
  * @author mfairchild365
  *
  */
-abstract class RegExpRouter_RoutesInterface
+namespace RegExpRouter;
+abstract class RoutesInterface
 {
     /**
      * All of the Post POST for this model.

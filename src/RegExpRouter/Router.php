@@ -7,7 +7,9 @@
  * 
  * @author mfairchild365
  */
-class RegExpRouter
+namespace RegExpRouter;
+
+class Router
 {
     //Determins if routes should be cached or not.
     public static $cacheRoutes = false;
@@ -165,7 +167,7 @@ class RegExpRouter
         }
         
         //Directory iterator
-        $directory = new DirectoryIterator($this->srcDir);
+        $directory = new \DirectoryIterator($this->srcDir);
         
         //Loop though the src directory and find all sub directories (all models should have a sub directory).
         foreach ($directory as $file) {
@@ -183,8 +185,8 @@ class RegExpRouter
         
         //Now that we have included all of the routes classes, loop though them.
         foreach (get_declared_classes() as $class) {
-            //add all of the routes as long as the class extends the routes interface
-            if (in_array('RegExpRouter_RoutesInterface', class_parents($class))) {
+            //Add all of the routes as long as the class extends the routes interface
+            if (in_array('RegExpRouter\RoutesInterface', class_parents($class))) {
                 $routes += call_user_func($class . "::getRoutes");
             }
         }

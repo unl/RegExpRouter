@@ -1,5 +1,5 @@
 <?php
-class Example_Home_Routes extends RegExpRouter_RoutesInterface
+class Example_Home_Routes extends RegExpRouter\RoutesInterface
 {
     public static function getGetRoutes()
     {

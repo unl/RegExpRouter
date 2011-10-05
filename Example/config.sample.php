@@ -1,15 +1,12 @@
 <?php
 function autoload($class)
 {
-    $class = str_replace('_', '/', $class);
-    
-    $pathArray = explode(PATH_SEPARATOR, get_include_path());
-
-    foreach($pathArray as $path) {
-        if (file_exists($path . "/" . $class . '.php')) {
-            include $class . '.php';
-        }
+    $file = str_replace(array('_', '\\'), '/', $class).'.php';
+    if ($fullpath = stream_resolve_include_path($file)) {
+        include $fullpath;
+        return true;
     }
+    return false;
 }
 
 spl_autoload_register("autoload");
@@ -24,6 +21,6 @@ ini_set('display_errors', true);
 
 error_reporting(E_ALL);
 
-RegExpRouter::$cacheRoutes = false;
+RegExpRouter\Router::$cacheRoutes = false;
 
 Example_Controller::$url = 'http://localhost/application/vendor/RegExpRouter/Example/';
