@@ -7,16 +7,15 @@
  * 
  * @author mfairchild365
  */
-class RegExpRouter
+namespace RegExpRouter;
+
+class Router
 {
     //Determins if routes should be cached or not.
     public static $cacheRoutes = false;
     
-    //Class prefix for your sysem.  Determins name of Routes class, IE: Mysystem_Module_Routes
-    protected $classPrefix = "";
-    
     //The directory where your source is stored.
-    protected $classDir = "";
+    protected $srcDir = "";
     
     //Array of routes
     protected $routes = array();
@@ -24,7 +23,7 @@ class RegExpRouter
     /**
      * Constructor
      * 
-     * @param array $options - array of options. Requires baseURL, classDir and classPrefix be defined.
+     * @param array $options - array of options. Requires baseURL.  srcDir is required only if you want to scan for models (srcDir must be a full system path).
      * 
      * @throws Exception
      */
@@ -33,11 +32,6 @@ class RegExpRouter
         //Check if the baseURL is set.
         if (!isset($options['baseURL']) || empty($options['baseURL'])) {
             throw new Exception("You must define the baseURL", 500);
-        }
-        
-        //check if the classPrefix is set.
-        if (!isset($options['classPrefix']) || empty($options['classPrefix'])) {
-            $options['classPrefix'] = "";
         }
         
         //Set all class properties with the passed options.
@@ -154,7 +148,7 @@ class RegExpRouter
      */
     public function getCachePath()
     {
-        return sys_get_temp_dir() . "/RegExRouterCache_" . md5($this->classDir . $this->classPrefix) . ".php";
+        return sys_get_temp_dir() . "/RegExRouterCache_" . md5($this->srcDir) . ".php";
     }
     
     /**
@@ -168,27 +162,40 @@ class RegExpRouter
         $routes = array();
         
         //Check if we are going to sift though directories.
-        if (empty($this->classDir)) {
+        if (empty($this->srcDir)) {
             return $routes;
         }
         
         //Directory iterator
-        $directory = new DirectoryIterator($this->classDir);
+        $directory = new \DirectoryIterator($this->srcDir);
         
-        //Compile all the routes.
+        //Loop though the src directory and find all sub directories (all models should have a sub directory).
         foreach ($directory as $file) {
             //Only check diretories.
             if ($file->getType() == 'dir' && !$file->isDot()) {
-                //Generate the class name for the routes class.
-                $class = $this->classPrefix . $file->getFileName() . "_Routes";
+                //generate the filename of the routes class for this model.
+                $fileName = $this->srcDir . "/" . $file->getFileName() . "/Routes.php";
                 
-                //Check if the class exists, and if it does get its routes.
-                if (class_exists($class)) {
-                    $routes += call_user_func($class . "::getRoutes");
+                //If the file exists, include it.
+                if (file_exists($fileName)) {
+                    include $fileName;
                 }
             }
         }
         
+        //Now that we have included all of the routes classes, loop though them.
+        foreach (get_declared_classes() as $class) {
+            //Add all of the routes as long as the class extends the routes interface
+            if (in_array('RegExpRouter\RoutesInterface', class_parents($class))) {
+                $routes += call_user_func($class . "::getRoutes");
+            }
+        }
+        
         return $routes;
+    }
+    
+    public function __invoke($requestURI, array $options = array())
+    {
+        return $this->route($requestURI, $options);
     }
 }

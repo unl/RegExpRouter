@@ -1,5 +1,5 @@
 <?php
-namespace Example\Home;
+namespace Example\Account;
 
 class View
 {
