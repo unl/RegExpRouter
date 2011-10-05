@@ -12,7 +12,7 @@ $options = array(
 
 h2. Methods of routing:
 
-# *Scanning*
+1. *Scanning*
 
 The router will scan though your models and load routes.  You will need a file called Routes.php within each of your model's directories (ie: project/exampleModel/Routes.php).  This Routes.php file must extend RegExpRouter\RoutesInterface and define all of the routes for that model.
 
@@ -27,7 +27,7 @@ $options = array('baseURL'=>'yoururl', 'srcDir'=>'yourSrcDir');
 $router  = new RegExpRouter\Router($options);
 $router->route($_SERVER['REQUEST_URI'], $_GET);
 
-# *User Defined Mapping*
+2. *User Defined Mapping*
 
 You can compile the array of regex to model mapping yourself and call the RegExpRouter->setRoutes(array) method:
 
