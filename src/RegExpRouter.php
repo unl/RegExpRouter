@@ -13,7 +13,7 @@ class RegExpRouter
     public static $cacheRoutes = false;
     
     //The directory where your source is stored.
-    protected $classDir = "";
+    protected $srcDir = "";
     
     //Array of routes
     protected $routes = array();
@@ -21,7 +21,7 @@ class RegExpRouter
     /**
      * Constructor
      * 
-     * @param array $options - array of options. Requires baseURL, classDir.
+     * @param array $options - array of options. Requires baseURL.  srcDir is required only if you want to scan for models (srcDir must be a full system path).
      * 
      * @throws Exception
      */
@@ -146,7 +146,7 @@ class RegExpRouter
      */
     public function getCachePath()
     {
-        return sys_get_temp_dir() . "/RegExRouterCache_" . md5($this->classDir) . ".php";
+        return sys_get_temp_dir() . "/RegExRouterCache_" . md5($this->srcDir) . ".php";
     }
     
     /**
@@ -160,19 +160,19 @@ class RegExpRouter
         $routes = array();
         
         //Check if we are going to sift though directories.
-        if (empty($this->classDir)) {
+        if (empty($this->srcDir)) {
             return $routes;
         }
         
         //Directory iterator
-        $directory = new DirectoryIterator($this->classDir);
+        $directory = new DirectoryIterator($this->srcDir);
         
         //Loop though the src directory and find all sub directories (all models should have a sub directory).
         foreach ($directory as $file) {
             //Only check diretories.
             if ($file->getType() == 'dir' && !$file->isDot()) {
                 //generate the filename of the routes class for this model.
-                $fileName = $this->classDir . "/" . $file->getFileName() . "/Routes.php";
+                $fileName = $this->srcDir . "/" . $file->getFileName() . "/Routes.php";
                 
                 //If the file exists, include it.
                 if (file_exists($fileName)) {
