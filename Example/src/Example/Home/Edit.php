@@ -1,5 +1,7 @@
 <?php
-class Example_Home_Edit
+namespace Example\Home;
+
+class Edit
 {
     public $id;
     
