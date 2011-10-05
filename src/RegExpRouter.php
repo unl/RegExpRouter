@@ -12,9 +12,6 @@ class RegExpRouter
     //Determins if routes should be cached or not.
     public static $cacheRoutes = false;
     
-    //Class prefix for your sysem.  Determins name of Routes class, IE: Mysystem_Module_Routes
-    protected $classPrefix = "";
-    
     //The directory where your source is stored.
     protected $classDir = "";
     
@@ -24,7 +21,7 @@ class RegExpRouter
     /**
      * Constructor
      * 
-     * @param array $options - array of options. Requires baseURL, classDir and classPrefix be defined.
+     * @param array $options - array of options. Requires baseURL, classDir.
      * 
      * @throws Exception
      */
@@ -33,11 +30,6 @@ class RegExpRouter
         //Check if the baseURL is set.
         if (!isset($options['baseURL']) || empty($options['baseURL'])) {
             throw new Exception("You must define the baseURL", 500);
-        }
-        
-        //check if the classPrefix is set.
-        if (!isset($options['classPrefix']) || empty($options['classPrefix'])) {
-            $options['classPrefix'] = "";
         }
         
         //Set all class properties with the passed options.
@@ -154,7 +146,7 @@ class RegExpRouter
      */
     public function getCachePath()
     {
-        return sys_get_temp_dir() . "/RegExRouterCache_" . md5($this->classDir . $this->classPrefix) . ".php";
+        return sys_get_temp_dir() . "/RegExRouterCache_" . md5($this->classDir) . ".php";
     }
     
     /**
