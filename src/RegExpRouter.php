@@ -175,17 +175,25 @@ class RegExpRouter
         //Directory iterator
         $directory = new DirectoryIterator($this->classDir);
         
-        //Compile all the routes.
+        //Loop though the src directory and find all sub directories (all models should have a sub directory).
         foreach ($directory as $file) {
             //Only check diretories.
             if ($file->getType() == 'dir' && !$file->isDot()) {
-                //Generate the class name for the routes class.
-                $class = $this->classPrefix . $file->getFileName() . "_Routes";
+                //generate the filename of the routes class for this model.
+                $fileName = $this->classDir . "/" . $file->getFileName() . "/Routes.php";
                 
-                //Check if the class exists, and if it does get its routes.
-                if (class_exists($class)) {
-                    $routes += call_user_func($class . "::getRoutes");
+                //If the file exists, include it.
+                if (file_exists($fileName)) {
+                    include $fileName;
                 }
+            }
+        }
+        
+        //Now that we have included all of the routes classes, loop though them.
+        foreach (get_declared_classes() as $class) {
+            //add all of the routes as long as the class extends the routes interface
+            if (in_array('RegExpRouter_RoutesInterface', class_parents($class))) {
+                $routes += call_user_func($class . "::getRoutes");
             }
         }
         
