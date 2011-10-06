@@ -194,6 +194,17 @@ class Router
         return $routes;
     }
     
+    /**
+     * Adds a single route to the routes array.
+     * 
+     * @param array $route
+     * @return int number of new elments in the array
+     */
+    public function addRoute(array $route)
+    {
+        return array_push($this->routes, $route);
+    }
+    
     public function __invoke($requestURI, array $options = array())
     {
         return $this->route($requestURI, $options);
