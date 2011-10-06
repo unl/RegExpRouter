@@ -198,11 +198,13 @@ class Router
      * Adds a single route to the routes array.
      * 
      * @param array $route
-     * @return int number of new elments in the array
+     * @return RegExpRouter\Router $this
      */
     public function addRoute(array $route)
     {
-        return array_push($this->routes, $route);
+        array_push($this->routes, $route);
+        
+        return $this;
     }
     
     public function __invoke($requestURI, array $options = array())
