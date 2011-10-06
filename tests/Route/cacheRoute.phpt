@@ -10,6 +10,8 @@ if (file_exists(dirname(dirname(dirname(__FILE__))) . '/Example/config.inc.php')
 
 $router = new RegExpRouter\Router(array('baseURL' => Example\Controller::$url, 'srcDir' => dirname(dirname(dirname(__FILE__))) . "/Example/src/Example/"));
 
+RegExpRouter\Router::$cacheRoutes = true;
+
 $uri = parse_url(Example\Controller::$url . "home/1/edit", PHP_URL_PATH);
 $example = new Example\Controller($router->route($uri, array()));
 ?>
