@@ -62,8 +62,8 @@ class Router
         $requestURI = substr($requestURI, strlen(parse_url($this->baseURL, PHP_URL_PATH)));
         
         //For older systems we used 'view' instead of 'model', this allows for backwards compatability.
-        if (isset($options['view'], $routes[$options['view']])) {
-            $options['model'] = $routes[$options['view']];
+        if (isset($options['view'], $this->routes[$options['view']])) {
+            $options['model'] = $this->routes[$options['view']];
             return $options;
         }
         
