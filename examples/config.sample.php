@@ -23,4 +23,4 @@ error_reporting(E_ALL);
 
 RegExpRouter\Router::$cacheRoutes = false;
 
-Example\Controller::$url = 'http://localhost/application/vendor/RegExpRouter/Example/';
+Example\Controller::$url = 'http://localhost/application/vendor/RegExpRouter/examples/';
