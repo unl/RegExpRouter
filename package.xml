@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package version="2.1" xmlns="http://pear.php.net/dtd/package-2.1" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.1     http://pear.php.net/dtd/package-2.1.xsd">
+ <name>RegExpRouter</name>
+ <channel>pear.unl.edu</channel>
+ <summary>h1. RegExpRouter
+</summary>
+ <description>
+h2. Introduction
+
+RegExpRouter is a php router system that routes clean URLs based on regular expressions and support PSR-0 complient projects.
+
+*Possible Options for a new Router:*
+$options = array(
+'baseURL'=&gt;'yoururl', //required: the full url: http://www.yoururl.com/
+'srcDir'=&gt;'yourSrcDir' //Only required if you want to scan your models.  *Must* be a full system path to your source directory.
+);
+
+h2. Methods of routing:
+
+1. *Scanning*
+
+The router will scan though your models and load routes.  You will need a file called Routes.php within each of your model's directories (ie: project/exampleModel/Routes.php).  This Routes.php file must extend RegExpRouter\RoutesInterface and define all of the routes for that model.
+
+For each Model that has a route, you will need to place a file named &quot;Routes&quot; within that class, which implements RegExpRouter\RoutesInterface and define the regex routes for the model.
+
+Routes are defined as an array of routes. And example route would look like this: $routes = array(array('yourRegex' =&gt; 'referenceModel'), array('moreRegex' =&gt; 'anotherModel'));
+The reference model should be the name of a class within the current model *without* it's namespace.  The namespace will be added to it automatically.
+
+*Here is some example code for scanning your models:*
+
+$options = array('baseURL'=&gt;'yoururl', 'srcDir'=&gt;'yourSrcDir');
+$router  = new RegExpRouter\Router($options);
+$router-&gt;route($_SERVER['REQUEST_URI'], $_GET);
+
+2. *User Defined Mapping*
+
+You can compile the array of regex to model mapping yourself and call the RegExpRouter-&gt;setRoutes(array) method:
+
+*Here is some example code for using your own mapping:*
+
+Routes are the same as the scaning method, except you should *always* define the fulll namesapce to the class within the model that you are referencing.
+
+$options = array('baseURL'=&gt;'yoururl');
+$router = new RegExpRouter\Router($options);
+$router-&gt;setRoutes(array('/^home$/i' =&gt; 'ExampleProject\ExampleModel\View'));
+$router-&gt;route($_SERVER['REQUEST_URI'], $_GET);
+
+h2. Example
+
+To view the very simple Example application in the Example folder to get a better feel of how it works.
+
+To set up the example application you will have to do the following:
+1) Copy the config.sample.php to a new file called config.inc.php in the same folder.
+2) Change the Example\Controller::$url in config.inc.php to a url that works with your setup.
+3) Copy the sample.htaccess file to a new file called .htaccess in the same folder.
+4) In .htaccess change the RewriteBase path to work with your setup.</description>
+ <lead>
+  <name>Brett Bieber</name>
+  <user>saltybeagle</user>
+  <email>brett.bieber@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Michael Fairchild</name>
+  <user>mfairchild365</user>
+  <email>mfairchild365@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-10-20</date>
+ <time>15:09:20</time>
+ <version>
+  <release>0.1.0</release>
+  <api>0.1.0</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+ <notes>First release with basic regular expression route support
+
+
+Initial API
+</notes>
+ <contents>
+  <dir name="/">
+   <dir name="examples">
+    <dir name="src" baseinstalldir="/">
+     <dir name="Example">
+      <dir name="Account">
+       <file role="doc" name="Routes.php"/>
+       <file role="doc" name="View.php"/>
+      </dir>
+      <dir name="Home">
+       <file role="doc" name="Edit.php"/>
+       <file role="doc" name="Routes.php"/>
+       <file role="doc" name="View.php"/>
+      </dir>
+      <file role="doc" name="Controller.php"/>
+     </dir>
+    </dir>
+    <file role="doc" name="config.sample.php"/>
+    <file role="doc" name="index.php"/>
+    <file role="doc" name="sample.htaccess"/>
+   </dir>
+   <dir name="src" baseinstalldir="/">
+    <dir name="RegExpRouter">
+     <file role="php" name="Router.php"/>
+     <file role="php" name="RoutesInterface.php"/>
+    </dir>
+   </dir>
+   <dir name="tests" baseinstalldir="/">
+    <dir name="Route">
+     <file role="test" name="cacheRoute.phpt"/>
+     <file role="test" name="route.phpt"/>
+     <file role="test" name="route_setRoutes.phpt"/>
+    </dir>
+   </dir>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.0</min>
+   </php>
+   <pearinstaller>
+    <min>2.0.0a1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease/>
+</package>
