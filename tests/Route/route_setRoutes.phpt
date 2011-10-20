@@ -2,10 +2,10 @@
 route() test, runs tests for route().  Tests static routs being set with setRoutes();
 --FILE--
 <?php
-if (file_exists(dirname(dirname(dirname(__FILE__))) . '/Example/config.inc.php')) {
-    require_once dirname(dirname(dirname(__FILE__))) . '/Example/config.inc.php';
+if (file_exists(dirname(dirname(dirname(__FILE__))) . '/examples/config.inc.php')) {
+    require_once dirname(dirname(dirname(__FILE__))) . '/examples/config.inc.php';
 } else {
-    require dirname(dirname(dirname(__FILE__))) . '/Example/config.sample.php';
+    require dirname(dirname(dirname(__FILE__))) . '/examples/config.sample.php';
 }
 
 $router = new RegExpRouter\Router(array('baseURL' => Example\Controller::$url));
