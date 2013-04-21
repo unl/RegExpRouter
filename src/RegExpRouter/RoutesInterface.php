@@ -87,7 +87,7 @@ abstract class RoutesInterface
         $routes += $object->getDeleteRoutes();
         $routes += $object->getPutRoutes();
 
-        return $object->addNamesapces($namespace, $routes);
+        return $object->addNamespaces($namespace, $routes);
     }
     
     /**
@@ -98,7 +98,7 @@ abstract class RoutesInterface
      * 
      * @return array $newRoutes the modified routes
      */
-    protected function addNamesapces($nameSpace, array $routes)
+    protected function addNamespaces($nameSpace, array $routes)
     {
         $newRoutes = array();
         
