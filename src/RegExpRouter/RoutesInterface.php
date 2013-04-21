@@ -25,8 +25,6 @@ namespace RegExpRouter;
  * 
  * This class is a routes interface.  All Routes class must
  * implement this interface to work properly.
- * 
- * @author mfairchild365
  *
  * @category Router
  * @package  RegExpRouter
@@ -35,7 +33,6 @@ namespace RegExpRouter;
  * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
  * @link     #
  */
-namespace RegExpRouter;
 abstract class RoutesInterface
 {
     /**
