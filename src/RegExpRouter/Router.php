@@ -2,13 +2,36 @@
 /**
  * RegExpRouter
  * 
- * This class is used to compile all of the routes for a php application and return
+ * This router is used to compile all of the routes for a php application and return
  * routes based on regex and a URI.
  * 
- * @author mfairchild365
+ * PHP Version 5
+ * 
+ * LICENSE http://www.opensource.org/licenses/mit-license.php
+ * 
+ * @category Router
+ * @package  RegExpRouter
+ * @author   Michael Fairchild <mfairchild365@gmail.com>
+ * @author   Brett Bieber <brett.bieber@gmail.com>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version  GIT: <git_id>
+ * @link     #
  */
 namespace RegExpRouter;
 
+
+/**
+ * Router
+ * 
+ * The main router class.  Routes a url.
+ * 
+ * @category Router
+ * @package  RegExpRouter
+ * @author   Michael Fairchild <mfairchild365@gmail.com>
+ * @author   Brett Bieber <brett.bieber@gmail.com>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link     #
+ */
 class Router
 {
     //Determins if routes should be cached or not.
@@ -23,7 +46,9 @@ class Router
     /**
      * Constructor
      * 
-     * @param array $options - array of options. Requires baseURL.  srcDir is required only if you want to scan for models (srcDir must be a full system path).
+     * @param array $options - array of options. Requires baseURL.  srcDir is 
+     *                         required only if you want to scan for models 
+     *                         (srcDir must be a full system path).
      * 
      * @throws Exception
      */
@@ -46,8 +71,8 @@ class Router
     /**
      * Routes based on a requestURI and options.
      * 
-     * @param string $requestURI
-     * @param array $options
+     * @param string $requestURI The request uri.
+     * @param array  $options    An array of options.  see the readme.
      * 
      * @return array $options - with the model defined (if one was found).
      */
@@ -55,21 +80,36 @@ class Router
     {
         //tidy up the requestURI
         if (!empty($_SERVER['QUERY_STRING'])) {
-            $requestURI = substr($requestURI, 0, -strlen($_SERVER['QUERY_STRING']) - 1);
+            $requestURI = substr(
+                $requestURI, 
+                0,
+                -strlen($_SERVER['QUERY_STRING']) - 1
+            );
         }
         
         // Trim the base part of the URL
-        $requestURI = substr($requestURI, strlen(parse_url($this->baseURL, PHP_URL_PATH)));
+        $requestURI = substr(
+            $requestURI,
+            strlen(parse_url($this->baseURL, PHP_URL_PATH))
+        );
         
-        //For older systems we used 'view' instead of 'model', this allows for backwards compatability.
+        /**
+         * For older systems we used 'view' instead of 'model',
+         * this allows for backwards compatability.
+         **/
         if (isset($options['view'], $this->routes[$options['view']])) {
             $options['model'] = $this->routes[$options['view']];
             return $options;
         }
         
-        //Loop though all of the routes and check to see the current url matches any routes.
+        /**
+         * Loop though all of the routes and check to see the 
+         * current url matches any routes.
+         **/
         foreach ($this->routes as $route_exp=>$model) {
-            if ($route_exp[0] == '/' && preg_match($route_exp, $requestURI, $matches)) {
+            if ($route_exp[0] == '/'
+                && preg_match($route_exp, $requestURI, $matches)
+            ) {
                 $options += $matches;
                 $options['model'] = $model;
                 return $options;
@@ -83,7 +123,9 @@ class Router
     /**
      * Set the routes.
      * 
-     * @param array $newRoutes
+     * @param array $newRoutes An associative array of routes.
+     * 
+     * @return null
      */
     public function setRoutes(array $newRoutes)
     {
@@ -148,11 +190,13 @@ class Router
      */
     public function getCachePath()
     {
-        return sys_get_temp_dir() . "/RegExRouterCache_" . md5($this->srcDir) . ".php";
+        return sys_get_temp_dir() . "/RegExRouterCache_"
+               . md5($this->srcDir) . ".php";
     }
     
     /**
-     * Compiles the routes by looping though all of the models and getting the routes for each model.
+     * Compiles the routes by looping though all of the models 
+     * and getting the routes for each model.
      * 
      * @return array $routes
      */
@@ -169,12 +213,16 @@ class Router
         //Directory iterator
         $directory = new \DirectoryIterator($this->srcDir);
         
-        //Loop though the src directory and find all sub directories (all models should have a sub directory).
+        /**
+         * Loop though the src directory and find all sub 
+         * directories (all models should have a sub directory).
+         **/
         foreach ($directory as $file) {
             //Only check diretories.
             if ($file->getType() == 'dir' && !$file->isDot()) {
                 //generate the filename of the routes class for this model.
-                $fileName = $this->srcDir . "/" . $file->getFileName() . "/Routes.php";
+                $fileName = $this->srcDir . "/" 
+                            . $file->getFileName() . "/Routes.php";
                 
                 //If the file exists, include it.
                 if (file_exists($fileName)) {
@@ -197,7 +245,8 @@ class Router
     /**
      * Adds a single route to the routes array.
      * 
-     * @param array $route
+     * @param array $route an associative array containing the route to be added.
+     * 
      * @return RegExpRouter\Router $this
      */
     public function addRoute(array $route)
@@ -207,6 +256,15 @@ class Router
         return $this;
     }
     
+    /**
+     * magic function for calling the object as a function.
+     * Using this method will invoke the route method.
+     * 
+     * @param string $requestURI the request uri
+     * @param array  $options    an array of options.
+     * 
+     * @return array $options - with the model defined (if one was found).
+     */
     public function __invoke($requestURI, array $options = array())
     {
         return $this->route($requestURI, $options);
