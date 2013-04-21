@@ -3,22 +3,22 @@ namespace Example\Account;
 
 class Routes extends \RegExpRouter\RoutesInterface
 {
-    public static function getGetRoutes()
+    public function getGetRoutes()
     {
         return array('/^account$/i' => 'View'); //'View' refers to the 'View' class for THIS model.
     }
     
-    public static function getPostRoutes()
+    public function getPostRoutes()
     {
         return array();
     }
     
-    public static function getDeleteRoutes()
+    public function getDeleteRoutes()
     {
         return array();
     }
     
-    public static function getPutRoutes()
+    public function getPutRoutes()
     {
         return array();
     }

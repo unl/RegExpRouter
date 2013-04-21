@@ -40,28 +40,28 @@ abstract class RoutesInterface
      * 
      * @return array an associative array of routes
      */
-    abstract public static function getPostRoutes();
+    abstract public function getPostRoutes();
     
     /**
      * All of the GET Routes for this model.
      * 
      * @return array an associative array of routes
      */
-    abstract public static function getGetRoutes();
+    abstract public function getGetRoutes();
     
     /**
      * All of the DELETE Routes for this model.
      * 
      * @return array an associative array of routes
      */
-    abstract public static function getDeleteRoutes();
+    abstract public function getDeleteRoutes();
     
     /**
      * All of the PUT Routes for this model.
      * 
      * @return array an associative array of routes
      */
-    abstract public static function getPutRoutes();
+    abstract public function getPutRoutes();
     
     /**
      * Gathers all of the Routes for this object.
@@ -75,14 +75,16 @@ abstract class RoutesInterface
     public static function getRoutes()
     {
         $class     = get_called_class();
+        $object    = new $class();
         $routes    = array();
         $namespace = substr($class, 0, strlen($class)-6);
-        $routes += call_user_func($class . "::getPostRoutes");
-        $routes += call_user_func($class . "::getGetRoutes");
-        $routes += call_user_func($class . "::getDeleteRoutes");
-        $routes += call_user_func($class . "::getPutRoutes");
-        
-        return self::addNamesapces($namespace, $routes);
+
+        $routes += $object->getPostRoutes();
+        $routes += $object->getGetRoutes();
+        $routes += $object->getDeleteRoutes();
+        $routes += $object->getPutRoutes();
+
+        return $object->addNamespaces($namespace, $routes);
     }
     
     /**
@@ -93,7 +95,7 @@ abstract class RoutesInterface
      * 
      * @return array $newRoutes the modified routes
      */
-    protected static function addNamesapces($nameSpace, array $routes)
+    protected function addNamespaces($nameSpace, array $routes)
     {
         $newRoutes = array();
         

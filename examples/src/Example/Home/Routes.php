@@ -3,14 +3,14 @@ namespace Example\Home;
 
 class Routes extends \RegExpRouter\RoutesInterface
 {
-    public static function getGetRoutes()
+    public function getGetRoutes()
     {
         return array('/^home$/i' => 'View', //'View' points to the 'View' class for THIS model.
                      '/^$/i' => 'View', //Match to an empty string, thus this is now the default home page.
                     );
     }
     
-    public static function getPostRoutes()
+    public function getPostRoutes()
     {
         /**
          * The Regex: ((?<id>[\d]+)\/)? will match a return variable with the key name 'id' with its value being the digit following it.
@@ -22,12 +22,12 @@ class Routes extends \RegExpRouter\RoutesInterface
         return array('/^home\/((?<id>[\d]+)\/)?edit$/i' => 'Edit'); //'Edit' points to the 'Edit' class for THIS model.
     }
     
-    public static function getDeleteRoutes()
+    public function getDeleteRoutes()
     {
         return array();
     }
     
-    public static function getPutRoutes()
+    public function getPutRoutes()
     {
         return array();
     }
