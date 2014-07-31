@@ -86,11 +86,19 @@ class Router
                 -strlen($_SERVER['QUERY_STRING']) - 1
             );
         }
-        
+
+        $path = parse_url($this->baseURL, PHP_URL_PATH);
+
+        //PHP < 5.4.7 does not parse agnostic URLs.  The path is always the entire URL.
+        if ($path == $this->baseURL && strpos($this->baseURL, '//') === 0) {
+            $path_start = strpos($this->baseURL, '/', 2);
+            $path = substr($this->baseURL, $path_start);
+        }
+
         // Trim the base part of the URL
         $requestURI = substr(
             $requestURI,
-            strlen(parse_url($this->baseURL, PHP_URL_PATH))
+            strlen($path)
         );
         
         /**
