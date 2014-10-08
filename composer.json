@@ -1,5 +1,5 @@
 {
-    "name": "unl/RegExpRouter",
+    "name": "unl/reg-exp-router",
     "autoload": {
         "psr-0": { "RegExpRouter": "src/" }
     }
