@@ -43,6 +43,8 @@ class Router
     //Array of routes
     protected $routes = array();
     
+    public $baseURL;
+
     /**
      * Constructor
      * 
